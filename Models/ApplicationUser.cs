@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace BaiTapBuoi6.Models
+namespace Lab5.Models
 {
     public class ApplicationUser : IdentityUser
     {

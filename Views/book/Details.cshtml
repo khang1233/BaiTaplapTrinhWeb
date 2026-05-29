@@ -1,0 +1,73 @@
+@model Lab5.Models.Book
+@{
+    ViewData["Title"] = "Chi Tiết Sách - " + Model.Title;
+}
+
+<div class="mb-4">
+    <a asp-action="Index" class="btn btn-link text-decoration-none p-0 text-secondary">
+        ⬅ Quay trở lại danh sách sách
+    </a>
+</div>
+
+<div class="card shadow-sm border-0 p-4 bg-white rounded">
+    <div class="row g-4 align-items-center">
+        
+        <div class="col-md-5 text-center">
+            <img src="/ImageBooks/@Model.ImageUrl" class="img-fluid rounded shadow-sm border" alt="@Model.Title" style="max-height: 450px; width: 100%; object-fit: cover;">
+        </div>
+        
+        <div class="col-md-7 ps-md-4">
+            <h3 class="fw-normal text-dark mb-3">@Model.Title</h3>
+            
+            <div class="row text-muted small mb-2">
+                <div class="col-6">
+                    <span>Nhà cung cấp: <a href="#" class="text-decoration-none fw-bold text-primary">NXB Trẻ</a></span>
+                </div>
+                <div class="col-6 text-end">
+                    <span>Tác giả: <span class="fw-bold text-dark">@Model.Author</span></span>
+                </div>
+            </div>
+            <div class="text-muted small mb-2">
+                <span>Nhà xuất bản: <span class="fw-bold text-dark">NXB Trẻ</span></span>
+            </div>
+
+            <div class="mb-3 text-warning">
+                ★★★★★ <span class="text-muted small">(78 đánh giá)</span>
+            </div>
+
+            <div class="d-flex align-items-center mb-4">
+                <span class="text-danger fs-2 fw-bold me-3">@String.Format("{0:#,##0} đ", Model.Price * 1000)</span>
+                <span class="text-decoration-line-through text-muted me-2">@String.Format("{0:#,##0} đ", Model.Price * 1300)</span>
+                <span class="badge bg-danger rounded-1">-23%</span>
+            </div>
+
+            <div class="mb-2 small">
+                <span class="text-muted me-3">Thời gian giao hàng</span>
+                <span>Giao hàng đến <a href="#" class="text-decoration-none">Thay đổi</a></span>
+            </div>
+            <div class="mb-4 small border-bottom pb-3">
+                <span class="text-muted me-4">Chính sách đổi trả</span>
+                <span>Đổi trả sản phẩm trong 30 ngày <a href="#" class="text-decoration-none">Xem thêm</a></span>
+            </div>
+
+            <div class="d-flex align-items-center mb-4">
+                <span class="fw-bold me-4">Số lượng:</span>
+                <div class="input-group" style="width: 120px;">
+                    <button class="btn btn-outline-secondary" type="button">-</button>
+                    <input type="text" class="form-control text-center" value="1">
+                    <button class="btn btn-outline-secondary" type="button">+</button>
+                </div>
+            </div>
+
+            <div class="d-flex gap-3">
+                <button class="btn btn-outline-danger btn-lg px-4 fw-bold rounded-2 bg-white" type="button" style="border-width: 2px;">
+                    🛒 Thêm vào giỏ hàng
+                </button>
+                <button class="btn btn-danger btn-lg px-5 fw-bold rounded-2" type="button">
+                    Mua ngay
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>

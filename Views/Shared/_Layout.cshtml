@@ -3,59 +3,66 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - BaiTapBuoi6</title>
+    <title>@ViewData["Title"] - Lab5</title>
+    <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/BaiTapBuoi6.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Lab5.styles.css" asp-append-version="true" />
+    <style>
+        .nav-link { font-size: 14px; }
+        .main-container { max-width: 1100px; margin: 0 auto; background-color: #fff; border: 1px solid #ddd; }
+        body { background-color: #f8f9fa; }
+    </style>
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">BaiTapBuoi6</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Trang chủ</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="Index">Sản phẩm</a>
-                        </li>
-                        @if (User.IsInRole("Admin"))
-                        {
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-danger fw-bold" href="#" id="navbarDropdownAdmin" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Quản trị Admin
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdownAdmin">
-                                    <li><a class="dropdown-item" asp-area="Admin" asp-controller="Product" asp-action="Index">Quản lý sản phẩm</a></li>
-                                    <li><a class="dropdown-item" asp-area="Admin" asp-controller="Category" asp-action="Index">Quản lý danh mục</a></li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="Index">Quản lý thành viên</a></li>
-                                </ul>
+    <div class="main-container mt-4 mb-4 shadow-sm">
+        <header>
+            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark py-1">
+                <div class="container-fluid px-4">
+                    <a class="navbar-brand fs-6 text-white-50" asp-area="" asp-controller="Home" asp-action="Index">Trang Chủ</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item">
+                                <a class="nav-link text-white-50 px-3" asp-area="" asp-controller="Book" asp-action="Index">Cửa hàng sách</a>
                             </li>
-                        }
-                    </ul>
-                    <partial name="_LoginPartial" />
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle text-danger fw-bold px-3" href="#" id="navbarDropdownAdmin" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Quản trị Admin
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownAdmin">
+                                        <li><a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="Index">Quản lý thành viên</a></li>
+                                    </ul>
+                                </li>
+                            }
+                        </ul>
+                        <partial name="_LoginPartial" />
+                    </div>
+                </div>
+            </nav>
+        </header>
+        
+        <div class="container-fluid px-4 py-4">
+            <div class="row">
+                <div class="col-md-3 border-end pe-4">
+                    @await Component.InvokeAsync("CategorySidebar")
+                </div>
+                <div class="col-md-9 ps-4">
+                    @RenderBody()
                 </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+        </div>
+
+        <footer class="footer text-center py-3" style="font-size: 13px; color: #666;">
+            &copy; 2023 - Lập trình Web
+        </footer>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - BaiTapBuoi6 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

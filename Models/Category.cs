@@ -1,19 +1,18 @@
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace BaiTapBuoi6.Models
+namespace Lab5.Models
 {
     public class Category
     {
         [Key]
-        [Display(Name = "Mã danh mục")]
-        public int Id { get; set; }
+        public int CategoryId { get; set; }
 
-        [Required(ErrorMessage = "Tên danh mục không được để trống")]
-        [StringLength(100, ErrorMessage = "Tên danh mục không được vượt quá 100 ký tự")]
-        [Display(Name = "Tên danh mục")]
-        public string Name { get; set; } = string.Empty;
+        [Required]
+        [StringLength(100)]
+        public string CategoryName { get; set; }
 
-        // Quan hệ 1-n: Một danh mục có nhiều sản phẩm
-        public List<Product> Products { get; set; } = new List<Product>();
+        // Mối quan hệ: Một chủ đề có nhiều sách
+        public List<Book> Books { get; set; } = new List<Book>();
     }
 }

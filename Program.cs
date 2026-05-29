@@ -1,104 +1,113 @@
-using Microsoft.EntityFrameworkCore;
+using Lab5.Models;
 using Microsoft.AspNetCore.Identity;
-using BaiTapBuoi6.Models;
-using BaiTapBuoi6.Repository;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddRazorPages(); // Đăng ký Razor Pages phục vụ cho Identity UI mặc định
+builder.Services.AddRazorPages(); // Rất quan trọng để hỗ trợ Identity Razor Pages
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+// Đăng ký MyDbContext (Cũ của bạn)
+builder.Services.AddDbContext<MyDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Đăng ký dịch vụ Identity sử dụng ApplicationUser kế thừa
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
-{
-    // Thiết lập cấu hình Identity
-    options.SignIn.RequireConfirmedAccount = false; // Tắt yêu cầu xác nhận tài khoản qua email để thuận tiện test
-    options.Password.RequireDigit = false;          // Tắt yêu cầu ký tự số
-    options.Password.RequiredLength = 3;            // Độ dài mật khẩu tối thiểu để hỗ trợ mật khẩu "admin" và "member"
-    options.Password.RequireNonAlphanumeric = false; // Tắt yêu cầu ký tự đặc biệt
-    options.Password.RequireUppercase = false;      // Tắt yêu cầu chữ hoa
-    options.Password.RequireLowercase = false;      // Tắt yêu cầu chữ thường
-})
-.AddEntityFrameworkStores<ApplicationDbContext>()
-.AddDefaultTokenProviders()
-.AddDefaultUI();
+// Đăng ký BookDbContext cho bài ASM5
+builder.Services.AddDbContext<BookDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Đăng ký dịch vụ Repository (Scoped Lifetime)
-builder.Services.AddScoped<ICategoryRepository, EFCategoryRepository>();
-builder.Services.AddScoped<IProductRepository, EFProductRepository>();
+// Đăng ký dịch vụ Identity
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<BookDbContext>()
+    .AddDefaultTokenProviders();
+
+// Tối giản chính sách mật khẩu để cho phép admin/admin và member/member
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.Password.RequireDigit = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequiredLength = 3; // Mật khẩu từ 3 ký tự trở lên
+    options.Password.RequiredUniqueChars = 0;
+});
+
+// Cấu hình đường dẫn Cookie mặc định
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Identity/Account/Login";
+    options.LogoutPath = "/Identity/Account/Logout";
+    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+});
 
 var app = builder.Build();
 
-// Tự động Seed Roles ("Admin", "Member") và tài khoản mặc định
+// Tự động Seed dữ liệu Roles & Tài khoản admin/admin, member/member khi khởi chạy
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     try
     {
+        var context = services.GetRequiredService<BookDbContext>();
+        
+        // Chạy migration tự động
+        context.Database.Migrate();
+
         var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
         var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
 
-        // Seed Roles
+        // 1. Tạo sẵn hai vai trò Admin và Member
         string[] roleNames = { "Admin", "Member" };
         foreach (var roleName in roleNames)
         {
-            var roleExist = await roleManager.RoleExistsAsync(roleName);
-            if (!roleExist)
+            if (!await roleManager.RoleExistsAsync(roleName))
             {
                 await roleManager.CreateAsync(new IdentityRole(roleName));
             }
         }
 
-        // Seed Admin User (admin/admin)
-        var existingAdmin = await userManager.FindByNameAsync("admin");
-        if (existingAdmin != null)
+        // 2. Tạo và Seed tài khoản Admin (admin / admin)
+        var adminUser = await userManager.FindByNameAsync("admin");
+        if (adminUser == null)
         {
-            await userManager.DeleteAsync(existingAdmin);
-        }
-        
-        var admin = new ApplicationUser
-        {
-            UserName = "admin",
-            Email = "admin@qlbanhang.com",
-            FullName = "System Administrator",
-            Address = "Hanoi, Vietnam",
-            EmailConfirmed = true
-        };
-        var createAdmin = await userManager.CreateAsync(admin, "admin");
-        if (createAdmin.Succeeded)
-        {
-            await userManager.AddToRoleAsync(admin, "Admin");
+            var user = new ApplicationUser
+            {
+                UserName = "admin",
+                Email = "admin@qlbanhang.com",
+                FullName = "Quản trị viên Hệ thống",
+                Address = "Hà Nội, Việt Nam",
+                EmailConfirmed = true
+            };
+            var result = await userManager.CreateAsync(user, "admin");
+            if (result.Succeeded)
+            {
+                await userManager.AddToRoleAsync(user, "Admin");
+            }
         }
 
-        // Seed Member User (member/member)
-        var existingMember = await userManager.FindByNameAsync("member");
-        if (existingMember != null)
+        // 3. Tạo và Seed tài khoản Member (member / member)
+        var memberUser = await userManager.FindByNameAsync("member");
+        if (memberUser == null)
         {
-            await userManager.DeleteAsync(existingMember);
-        }
-
-        var member = new ApplicationUser
-        {
-            UserName = "member",
-            Email = "member@qlbanhang.com",
-            FullName = "Regular Member",
-            Address = "Saigon, Vietnam",
-            EmailConfirmed = true
-        };
-        var createMember = await userManager.CreateAsync(member, "member");
-        if (createMember.Succeeded)
-        {
-            await userManager.AddToRoleAsync(member, "Member");
+            var user = new ApplicationUser
+            {
+                UserName = "member",
+                Email = "member@qlbanhang.com",
+                FullName = "Khách hàng Thành viên",
+                Address = "TP. Hồ Chí Minh, Việt Nam",
+                EmailConfirmed = true
+            };
+            var result = await userManager.CreateAsync(user, "member");
+            if (result.Succeeded)
+            {
+                await userManager.AddToRoleAsync(user, "Member");
+            }
         }
     }
     catch (Exception ex)
     {
         var logger = services.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "Lỗi xảy ra trong quá trình seeding cơ sở dữ liệu.");
+        logger.LogError(ex, "Đã xảy ra lỗi trong quá trình Seeding dữ liệu Roles và Users.");
     }
 }
 
@@ -110,23 +119,26 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();
-
 app.UseRouting();
 
-// Thêm Middleware xác thực (Authentication) trước Middleware phân quyền (Authorization)
+// Thêm UseAuthentication vào đúng vị trí trước UseAuthorization
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Route Area cho Admin (Bắt buộc map trước route default)
+app.MapStaticAssets();
+
+// Định tuyến cho Area Admin
 app.MapControllerRoute(
     name: "areas",
     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
+// Định tuyến mặc định
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}")
+    .WithStaticAssets();
 
-app.MapRazorPages(); // Map các trang Razor Pages của Identity UI mặc định
+// Định tuyến cho các trang Razor Pages của Identity
+app.MapRazorPages();
 
 app.Run();

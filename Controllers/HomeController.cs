@@ -1,27 +1,14 @@
-using System.Diagnostics;
+using Lab5.Models;
 using Microsoft.AspNetCore.Mvc;
-using BaiTapBuoi6.Models;
-using BaiTapBuoi6.Repository;
+using System.Diagnostics;
 
-namespace BaiTapBuoi6.Controllers
+namespace Lab5.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        private readonly IProductRepository _productRepository;
-
-        public HomeController(ILogger<HomeController> logger, IProductRepository productRepository)
+        public IActionResult Index()
         {
-            _logger = logger;
-            _productRepository = productRepository;
-        }
-
-        public async Task<IActionResult> Index()
-        {
-            // Lấy ra tối đa 6 sản phẩm nổi bật hiển thị ở trang chủ
-            var products = await _productRepository.GetAllAsync();
-            var featuredProducts = products.Take(6).ToList();
-            return View(featuredProducts);
+            return View();
         }
 
         public IActionResult Privacy()

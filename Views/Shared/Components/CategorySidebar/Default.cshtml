@@ -1,0 +1,18 @@
+@model IEnumerable<Lab5.Models.Category>
+
+<h3 class="fw-normal mb-3" style="color: #444;">Chủ đề</h3>
+<ul class="list-unstyled">
+    <li class="mb-2">
+        <a asp-controller="Book" asp-action="Index" class="text-decoration-none text-muted" style="font-size: 15px;">
+            <span class="text-dark me-1">•</span> Tất cả sản phẩm
+        </a>
+    </li>
+    @foreach (var cat in Model)
+    {
+        <li class="mb-2">
+            <a asp-controller="Book" asp-action="Index" asp-route-categoryId="@cat.CategoryId" class="text-decoration-none text-muted" style="font-size: 15px;">
+                <span class="text-dark me-1">•</span> @cat.CategoryName (@(cat.Books?.Count ?? 0))
+            </a>
+        </li>
+    }
+</ul>

@@ -1,4 +1,4 @@
-@model IEnumerable<BaiTapBuoi6.Areas.Admin.Controllers.UserController.UserViewModel>
+@model IEnumerable<Lab5.Areas.Admin.Controllers.UserController.UserViewModel>
 
 @{
     ViewData["Title"] = "Quản lý Thành viên - Admin";
@@ -11,11 +11,8 @@
             <p class="text-muted mb-0">Xem danh sách người dùng và thăng/hạ quyền Admin cực kỳ dễ dàng</p>
         </div>
         <div class="d-flex gap-2">
-            <a asp-controller="Product" asp-action="Index" class="btn btn-outline-dark px-4 py-2 shadow-sm fw-semibold">
-                Quản lý sản phẩm
-            </a>
-            <a asp-controller="Category" asp-action="Index" class="btn btn-outline-dark px-4 py-2 shadow-sm fw-semibold">
-                Quản lý danh mục
+            <a asp-area="" asp-controller="Book" asp-action="Index" class="btn btn-outline-dark px-4 py-2 shadow-sm fw-semibold">
+                Quay lại Cửa hàng
             </a>
         </div>
     </div>
