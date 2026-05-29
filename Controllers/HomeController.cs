@@ -8,7 +8,8 @@ namespace Lab5.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            // Tự động chuyển hướng đến cửa hàng sách tuyệt đẹp
+            return RedirectToAction("Index", "Book");
         }
 
         public IActionResult Privacy()

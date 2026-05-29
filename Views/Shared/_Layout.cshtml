@@ -1,42 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Lab5</title>
-    <script type="importmap"></script>
+    <title>@ViewData["Title"] - Cửa hàng sách Premium</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Lab5.styles.css" asp-append-version="true" />
-    <style>
-        .nav-link { font-size: 14px; }
-        .main-container { max-width: 1100px; margin: 0 auto; background-color: #fff; border: 1px solid #ddd; }
-        body { background-color: #f8f9fa; }
-    </style>
 </head>
-<body>
-    <div class="main-container mt-4 mb-4 shadow-sm">
+<body class="bg-light">
+    <div class="main-container shadow-lg my-4">
+        <!-- Premium Modern Header -->
         <header>
-            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark py-1">
-                <div class="container-fluid px-4">
-                    <a class="navbar-brand fs-6 text-white-50" asp-area="" asp-controller="Home" asp-action="Index">Trang Chủ</a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+            <nav class="navbar navbar-expand-md navbar-dark navbar-premium">
+                <div class="container-fluid px-2">
+                    <a class="navbar-brand navbar-brand-premium fw-extrabold" asp-area="" asp-controller="Book" asp-action="Index">
+                        <i class="bi bi-book-half"></i> BOOKSTORE
+                    </a>
+                    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                             aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                         <ul class="navbar-nav flex-grow-1">
                             <li class="nav-item">
-                                <a class="nav-link text-white-50 px-3" asp-area="" asp-controller="Book" asp-action="Index">Cửa hàng sách</a>
+                                <a class="nav-link text-white-50 px-3" asp-area="" asp-controller="Book" asp-action="Index">
+                                    <i class="bi bi-shop me-1"></i> Cửa hàng sách
+                                </a>
                             </li>
                             @if (User.IsInRole("Admin"))
                             {
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle text-danger fw-bold px-3" href="#" id="navbarDropdownAdmin" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Quản trị Admin
+                                        <i class="bi bi-shield-lock me-1"></i> Quản trị Admin
                                     </a>
-                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownAdmin">
-                                        <li><a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="Index">Quản lý thành viên</a></li>
+                                    <ul class="dropdown-menu border-0 shadow-lg mt-2" aria-labelledby="navbarDropdownAdmin" style="border-radius: 12px;">
+                                        <li>
+                                            <a class="dropdown-item py-2 px-3 fw-semibold text-dark" asp-area="Admin" asp-controller="User" asp-action="Index">
+                                                <i class="bi bi-people me-2"></i> Quản lý thành viên
+                                            </a>
+                                        </li>
                                     </ul>
                                 </li>
                             }
@@ -47,19 +49,29 @@
             </nav>
         </header>
         
-        <div class="container-fluid px-4 py-4">
-            <div class="row">
-                <div class="col-md-3 border-end pe-4">
-                    @await Component.InvokeAsync("CategorySidebar")
+        <!-- Main Shop Layout Split -->
+        <div class="container-fluid px-4 py-5">
+            <div class="row g-4">
+                <!-- Left Category Sidebar -->
+                <div class="col-lg-3">
+                    <div class="sidebar-premium-card">
+                        <div class="sidebar-title">
+                            <i class="bi bi-grid-fill text-primary"></i> Danh mục sách
+                        </div>
+                        @await Component.InvokeAsync("CategorySidebar")
+                    </div>
                 </div>
-                <div class="col-md-9 ps-4">
+                
+                <!-- Right Public/Admin Content Area -->
+                <div class="col-lg-9">
                     @RenderBody()
                 </div>
             </div>
         </div>
 
-        <footer class="footer text-center py-3" style="font-size: 13px; color: #666;">
-            &copy; 2023 - Lập trình Web
+        <!-- Premium Footer -->
+        <footer class="footer text-center py-4 border-top bg-light-subtle text-muted small">
+            &copy; 2026 - Bookstore Premium - Nâng tầm trải nghiệm đọc sách 📚
         </footer>
     </div>
 

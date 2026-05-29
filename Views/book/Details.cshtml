@@ -4,70 +4,85 @@
 }
 
 <div class="mb-4">
-    <a asp-action="Index" class="btn btn-link text-decoration-none p-0 text-secondary">
-        ⬅ Quay trở lại danh sách sách
+    <a asp-action="Index" class="btn btn-outline-secondary btn-sm rounded-pill px-3 shadow-sm text-decoration-none">
+        <i class="bi bi-arrow-left-circle me-1"></i> Quay trở lại danh mục sách
     </a>
 </div>
 
-<div class="card shadow-sm border-0 p-4 bg-white rounded">
-    <div class="row g-4 align-items-center">
-        
-        <div class="col-md-5 text-center">
-            <img src="/ImageBooks/@Model.ImageUrl" class="img-fluid rounded shadow-sm border" alt="@Model.Title" style="max-height: 450px; width: 100%; object-fit: cover;">
+<div class="detail-card-premium">
+    <div class="row g-5 align-items-center">
+        <!-- Book Left Column (Image) -->
+        <div class="col-md-5">
+            <div class="detail-img-container">
+                <img src="/ImageBooks/@Model.ImageUrl" class="detail-img img-fluid rounded-3" alt="@Model.Title" style="max-height: 400px; object-fit: contain;">
+            </div>
         </div>
         
-        <div class="col-md-7 ps-md-4">
-            <h3 class="fw-normal text-dark mb-3">@Model.Title</h3>
+        <!-- Book Right Column (Content) -->
+        <div class="col-md-7">
+            <!-- Breadcrumb Category -->
+            <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill mb-3 fw-bold uppercase tracking-wider">
+                <i class="bi bi-tags-fill me-1"></i>@(Model.Category?.CategoryName ?? "Sách chọn lọc")
+            </span>
             
-            <div class="row text-muted small mb-2">
-                <div class="col-6">
-                    <span>Nhà cung cấp: <a href="#" class="text-decoration-none fw-bold text-primary">NXB Trẻ</a></span>
+            <h1 class="fw-extrabold text-dark mb-3 lh-base fs-3">@Model.Title</h1>
+            
+            <div class="row border-bottom pb-3 mb-4 text-muted small">
+                <div class="col-6 d-flex align-items-center gap-1">
+                    <i class="bi bi-pencil-square text-primary"></i> Tác giả: <strong class="text-dark">@Model.Author</strong>
                 </div>
-                <div class="col-6 text-end">
-                    <span>Tác giả: <span class="fw-bold text-dark">@Model.Author</span></span>
-                </div>
-            </div>
-            <div class="text-muted small mb-2">
-                <span>Nhà xuất bản: <span class="fw-bold text-dark">NXB Trẻ</span></span>
-            </div>
-
-            <div class="mb-3 text-warning">
-                ★★★★★ <span class="text-muted small">(78 đánh giá)</span>
-            </div>
-
-            <div class="d-flex align-items-center mb-4">
-                <span class="text-danger fs-2 fw-bold me-3">@String.Format("{0:#,##0} đ", Model.Price * 1000)</span>
-                <span class="text-decoration-line-through text-muted me-2">@String.Format("{0:#,##0} đ", Model.Price * 1300)</span>
-                <span class="badge bg-danger rounded-1">-23%</span>
-            </div>
-
-            <div class="mb-2 small">
-                <span class="text-muted me-3">Thời gian giao hàng</span>
-                <span>Giao hàng đến <a href="#" class="text-decoration-none">Thay đổi</a></span>
-            </div>
-            <div class="mb-4 small border-bottom pb-3">
-                <span class="text-muted me-4">Chính sách đổi trả</span>
-                <span>Đổi trả sản phẩm trong 30 ngày <a href="#" class="text-decoration-none">Xem thêm</a></span>
-            </div>
-
-            <div class="d-flex align-items-center mb-4">
-                <span class="fw-bold me-4">Số lượng:</span>
-                <div class="input-group" style="width: 120px;">
-                    <button class="btn btn-outline-secondary" type="button">-</button>
-                    <input type="text" class="form-control text-center" value="1">
-                    <button class="btn btn-outline-secondary" type="button">+</button>
+                <div class="col-6 text-end d-flex align-items-center justify-content-end gap-1">
+                    <i class="bi bi-building text-info"></i> Nhà XB: <strong class="text-dark">NXB Trẻ</strong>
                 </div>
             </div>
 
-            <div class="d-flex gap-3">
-                <button class="btn btn-outline-danger btn-lg px-4 fw-bold rounded-2 bg-white" type="button" style="border-width: 2px;">
-                    🛒 Thêm vào giỏ hàng
+            <!-- Review Stars -->
+            <div class="mb-4 text-warning fs-5">
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <span class="text-muted small fs-6 ms-2">(124 đánh giá chính hãng)</span>
+            </div>
+
+            <!-- Price Box -->
+            <div class="p-3 bg-light rounded-3 mb-4 d-flex align-items-center justify-content-between">
+                <div>
+                    <span class="text-muted small d-block mb-1 text-decoration-line-through">Giá gốc: @String.Format("{0:#,##0} đ", Model.Price * 1300)</span>
+                    <span class="text-danger fs-3 fw-extrabold">@String.Format("{0:#,##0} đ", Model.Price * 1000)</span>
+                </div>
+                <span class="badge bg-danger rounded-pill px-3 py-2 fs-6">-23% GIẢM</span>
+            </div>
+
+            <!-- Shipping Policy Box -->
+            <div class="card bg-light border-0 rounded-3 p-3 mb-4 small">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="text-muted"><i class="bi bi-truck me-2 text-primary"></i>Giao hàng tận nơi</span>
+                    <span class="fw-semibold text-dark">Miễn phí toàn quốc</span>
+                </div>
+                <div class="d-flex align-items-center justify-content-between">
+                    <span class="text-muted"><i class="bi bi-shield-check me-2 text-success"></i>Chính sách bảo mật</span>
+                    <span class="fw-semibold text-dark">Đổi trả 100% trong 30 ngày</span>
+                </div>
+            </div>
+
+            <!-- Buy & Add to Cart -->
+            <div class="d-flex align-items-center gap-3">
+                <div class="input-group border rounded-pill overflow-hidden" style="width: 140px; height: 48px;">
+                    <button class="btn btn-light border-0 px-3 fs-5" type="button" onclick="var i = this.nextElementSibling; if(parseInt(i.value)>1) i.value=parseInt(i.value)-1;">-</button>
+                    <input type="text" class="form-control border-0 text-center fw-bold fs-6 bg-white" value="1" readonly>
+                    <button class="btn btn-light border-0 px-3 fs-5" type="button" onclick="var i = this.previousElementSibling; i.value=parseInt(i.value)+1;">+</button>
+                </div>
+                
+                <button class="btn btn-outline-danger btn-premium-pill flex-grow-1 py-3 fw-bold" style="height: 48px; border-width: 2px;">
+                    <i class="bi bi-cart3 me-1"></i> Giỏ hàng
                 </button>
-                <button class="btn btn-danger btn-lg px-5 fw-bold rounded-2" type="button">
+                
+                <button class="btn btn-danger btn-premium-pill flex-grow-1 py-3 fw-bold text-white shadow-sm" style="height: 48px;">
                     Mua ngay
                 </button>
             </div>
         </div>
-
     </div>
 </div>
