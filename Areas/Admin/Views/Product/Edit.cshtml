@@ -1,0 +1,72 @@
+@model BaiTapBuoi6.Models.Product
+
+@{
+    ViewData["Title"] = "Cập nhật sản phẩm - Admin";
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card border-0 shadow-sm rounded-3">
+                <div class="card-header bg-warning py-3 text-dark">
+                    <h2 class="h4 mb-0 fw-bold">Cập nhật sản phẩm (Admin)</h2>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="Edit" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                        <input type="hidden" asp-for="Id" />
+
+                        <div class="form-group mb-3">
+                            <label asp-for="Name" class="form-label fw-semibold">Tên sản phẩm</label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="Price" class="form-label fw-semibold">Giá bán (đ)</label>
+                            <input asp-for="Price" class="form-control" />
+                            <span asp-validation-for="Price" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="Description" class="form-label fw-semibold">Mô tả sản phẩm</label>
+                            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="CategoryId" class="form-label fw-semibold">Danh mục</label>
+                            <select asp-for="CategoryId" class="form-select" asp-items="ViewBag.Categories"></select>
+                            <span asp-validation-for="CategoryId" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label class="form-label fw-semibold d-block">Hình ảnh sản phẩm hiện tại</label>
+                            <div class="mb-3">
+                                @if (Model.Images != null && Model.Images.Any())
+                                {
+                                    <img src="@Model.Images.FirstOrDefault()?.Url" class="img-thumbnail rounded shadow-sm" style="width: 150px; height: 120px; object-fit: cover;" alt="@Model.Name" />
+                                }
+                                else
+                                {
+                                    <span class="text-muted fst-italic small">Chưa có ảnh</span>
+                                }
+                            </div>
+                            <label class="form-label fw-semibold font-weight-bold">Thay thế bằng hình ảnh mới</label>
+                            <input type="file" name="image" class="form-control" />
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a asp-action="Index" class="btn btn-outline-secondary px-4 fw-medium">Quay lại</a>
+                            <input type="submit" value="Save" class="btn btn-warning px-4 fw-semibold text-dark" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

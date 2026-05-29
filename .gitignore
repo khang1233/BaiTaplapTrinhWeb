@@ -1,0 +1,68 @@
+## Ignore Visual Studio temporary files, build results, and user settings
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# User-specific files (MonoDevelop/Xamarin Studio)
+*.userprefs
+
+# Mono auto-generated files
+mono_crash.*
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Release]/
+[Releases]/
+x64/
+x86/
+build/
+bld/
+[Bb]in/
+[Oo]bj/
+[Log]/
+
+# Visual Studio 2015/2017/2019/2022 cache directory
+.vs/
+# Uncomment if you have tasks that create the project's static files in wwwroot
+# wwwroot/lib/
+
+# MSTest test Results
+[Test]Results/
+[Build]Context/
+
+# NUnit
+*.visualstate
+
+# Diagnostic Activity Logs
+*.diag
+
+# JetBrains Rider
+.idea/
+*.sln.iml
+
+# Visual Studio Code
+.vscode/
+
+# Local History for Visual Studio Code
+.history/
+
+# Windows image analyses
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# SQLite databases
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# App settings secrets
+appsettings.json.user

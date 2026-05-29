@@ -1,0 +1,109 @@
+@model IEnumerable<BaiTapBuoi6.Areas.Admin.Controllers.UserController.UserViewModel>
+
+@{
+    ViewData["Title"] = "Quản lý Thành viên - Admin";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+        <div>
+            <h1 class="h2 text-danger fw-bold mb-1"><span class="badge bg-danger me-2">Admin</span>Quản lý Thành viên</h1>
+            <p class="text-muted mb-0">Xem danh sách người dùng và thăng/hạ quyền Admin cực kỳ dễ dàng</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a asp-controller="Product" asp-action="Index" class="btn btn-outline-dark px-4 py-2 shadow-sm fw-semibold">
+                Quản lý sản phẩm
+            </a>
+            <a asp-controller="Category" asp-action="Index" class="btn btn-outline-dark px-4 py-2 shadow-sm fw-semibold">
+                Quản lý danh mục
+            </a>
+        </div>
+    </div>
+
+    <!-- Thông báo kết quả thao tác -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show shadow-sm border-success mb-4" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i>@TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show shadow-sm border-danger mb-4" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>@TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover table-striped align-middle mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th class="ps-4">Họ và tên</th>
+                            <th>Tên đăng nhập</th>
+                            <th>Email</th>
+                            <th>Địa chỉ</th>
+                            <th>Quyền hiện tại</th>
+                            <th class="text-center pe-4" style="width: 250px;">Thao tác quyền</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="fw-bold ps-4 text-dark">@item.FullName</td>
+                                    <td><span class="badge bg-light text-dark border px-2 py-1">@item.UserName</span></td>
+                                    <td>@item.Email</td>
+                                    <td class="text-muted">@item.Address</td>
+                                    <td>
+                                        @foreach (var role in item.Roles)
+                                        {
+                                            @if (role == "Admin")
+                                            {
+                                                <span class="badge bg-danger text-white px-2 py-1 fs-6">Admin</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-primary text-white px-2 py-1 fs-6">Member</span>
+                                            }
+                                        }
+                                    </td>
+                                    <td class="text-center pe-4">
+                                        <form asp-action="ToggleAdmin" method="post" class="d-inline">
+                                            <input type="hidden" name="userId" value="@item.Id" />
+                                            @if (item.Roles.Contains("Admin"))
+                                            {
+                                                <button type="submit" class="btn btn-outline-danger btn-sm px-3 rounded-pill fw-medium">
+                                                    Thu hồi Admin (Hạ quyền)
+                                                </button>
+                                            }
+                                            else
+                                            {
+                                                <button type="submit" class="btn btn-outline-success btn-sm px-3 rounded-pill fw-medium">
+                                                    Cấp quyền Admin
+                                                </button>
+                                            }
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="6" class="text-center py-5 text-muted">
+                                    Không tìm thấy thành viên nào.
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

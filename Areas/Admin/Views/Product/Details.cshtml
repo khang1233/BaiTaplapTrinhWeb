@@ -1,0 +1,60 @@
+@model BaiTapBuoi6.Models.Product
+
+@{
+    ViewData["Title"] = "Chi tiết sản phẩm - Admin";
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-8">
+            <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
+                <div class="card-header bg-info py-3 text-white">
+                    <h2 class="h4 mb-0 fw-bold">Chi tiết sản phẩm (Admin)</h2>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row">
+                        <div class="col-md-5 mb-4 mb-md-0 text-center">
+                            <div class="p-2 border rounded bg-light shadow-sm d-inline-block">
+                                @if (Model.Images != null && Model.Images.Any())
+                                {
+                                    <img src="@Model.Images.FirstOrDefault()?.Url" class="img-fluid rounded" style="max-width: 100%; max-height: 250px; object-fit: cover;" alt="@Model.Name" />
+                                }
+                                else
+                                {
+                                    <div class="py-5 px-4 text-muted fst-italic">Không có ảnh</div>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="col-md-7">
+                            <dl class="row">
+                                <dt class="col-sm-4 fw-semibold text-muted">Tên sản phẩm:</dt>
+                                <dd class="col-sm-8 fw-bold fs-5 text-dark">@Html.DisplayFor(model => model.Name)</dd>
+
+                                <dt class="col-sm-4 fw-semibold text-muted">Giá bán:</dt>
+                                <dd class="col-sm-8 text-danger fw-bold fs-5">@string.Format("{0:N0}", Model.Price) đ</dd>
+
+                                <dt class="col-sm-4 fw-semibold text-muted">Danh mục:</dt>
+                                <dd class="col-sm-8">
+                                    <span class="badge bg-secondary text-white px-2 py-1 fs-6">
+                                        @Html.DisplayFor(model => model.Category.Name)
+                                    </span>
+                                </dd>
+
+                                <dt class="col-sm-4 fw-semibold text-muted">Mô tả:</dt>
+                                <dd class="col-sm-8 text-muted">@Html.DisplayFor(model => model.Description)</dd>
+                            </dl>
+                        </div>
+                    </div>
+
+                    <hr class="my-4" />
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a asp-action="Index" class="btn btn-outline-secondary px-4 fw-medium">Quay lại danh sách</a>
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning px-4 text-dark fw-semibold">Chỉnh sửa</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

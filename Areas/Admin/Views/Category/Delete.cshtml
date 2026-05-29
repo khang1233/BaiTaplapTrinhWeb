@@ -1,0 +1,48 @@
+@model BaiTapBuoi6.Models.Category
+
+@{
+    ViewData["Title"] = "Xóa danh mục - Admin";
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
+                <div class="card-header bg-danger py-3 text-white">
+                    <h2 class="h4 mb-0 fw-bold">Bạn có chắc chắn muốn xóa danh mục này?</h2>
+                </div>
+                <div class="card-body p-4">
+                    
+                    <div class="alert alert-warning border-warning shadow-sm mb-4">
+                        <h4 class="alert-heading fw-bold text-danger">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>CẢNH BÁO QUAN TRỌNG!
+                        </h4>
+                        <p class="mb-0 text-dark">
+                            Hệ thống đã được cấu hình <strong>Xóa liên hoàn (Cascade Delete)</strong>. 
+                            Khi bạn xác nhận xóa danh mục <strong>"@Model.Name"</strong>, 
+                            <strong>tất cả sản phẩm thuộc danh mục này cũng sẽ bị xóa vĩnh viễn khỏi hệ thống!</strong>
+                        </p>
+                    </div>
+
+                    <dl class="row">
+                        <dt class="col-sm-4 fw-semibold text-muted">Mã danh mục:</dt>
+                        <dd class="col-sm-8 text-dark fw-bold">@Html.DisplayFor(model => model.Id)</dd>
+
+                        <dt class="col-sm-4 fw-semibold text-muted">Tên danh mục:</dt>
+                        <dd class="col-sm-8 text-dark fw-bold">@Html.DisplayFor(model => model.Name)</dd>
+                    </dl>
+
+                    <hr class="my-4" />
+
+                    <form asp-action="Delete" method="post">
+                        <input type="hidden" asp-for="Id" />
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a asp-action="Index" class="btn btn-outline-secondary px-4 fw-medium">Hủy bỏ</a>
+                            <input type="submit" value="Delete" class="btn btn-danger px-4 fw-bold shadow-sm" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
